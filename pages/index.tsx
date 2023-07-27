@@ -1,3 +1,4 @@
+import React from "react";
 import MainGrid from "../src/components/MainGrid";
 import Box from "../src/components/Box";
 import {
@@ -27,8 +28,9 @@ function ProfileSideBar(props) {
 }
 
 export default function Home() {
-  const usuarioAleatorio = "ek1l";
-
+  const usuarioAleatorio = "weberson22";
+  const [comunidades, setComunidades] = React.useState([]);
+  // const comunidades = [`Alurakut`];
   const pessoasFavoritas = [
     "juunegreiros",
     "omariosouto",
@@ -52,7 +54,13 @@ export default function Home() {
           </Box>
           <Box>
             <h2 className="subtitle">O que você deseja fazer?</h2>
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const comunidadesAtualizadas = [...comunidades, "Aluira Stars"];
+                setComunidades(comunidadesAtualizadas);
+              }}
+            >
               <div>
                 <input
                   type="text"
@@ -77,6 +85,20 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: "profileRelationsArea" }}
         >
+          <ProfileRelationsBoxWrapper>
+            <ul>
+              {comunidades.map((itemAtual, key) => {
+                return (
+                  <li>
+                    <a href={`/users/${itemAtual}`} key={key}>
+                      <img src={`https://placehold.it/300x300`} />
+                      <span>{itemAtual}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </ProfileRelationsBoxWrapper>
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da comunidade ({pessoasFavoritas.length})
