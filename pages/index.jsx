@@ -102,7 +102,7 @@ export default function Home() {
           <ProfileRelationsBoxWrapper>
            
             <h2 className="smallTitle">
-              Comunidade ({Object.keys(comunidades).length})
+              Comunidades ({Object.keys(comunidades).length})
             </h2>
             <ul>
               {comunidades.map((itemAtual, key) => {
@@ -121,7 +121,6 @@ export default function Home() {
             <h2 className="smallTitle">
               Pessoas da comunidade ({pessoasFavoritas.length})
             </h2>
-
             <ul>
               {pessoasFavoritas.map((itemAtual, key) => {
                 return (
