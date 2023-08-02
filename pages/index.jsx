@@ -4,8 +4,10 @@ import Box from "../src/components/Box";
 import {
   AlurakutMenu,
   AlurakutProfileSidebarMenuDefault,
-  OrkutNostalgicIconSet,
+  OrkutNostalgicIconSet, 
 } from "../src/lib/AlurakutCommons";
+
+
 import { ProfileRelationsBoxWrapper } from "../src/components/ProfileRelations";
 
 function ProfileSideBar(props) {
@@ -22,7 +24,8 @@ function ProfileSideBar(props) {
         </a>
       </p>
       <hr />
-      <AlurakutProfileSidebarMenuDefault />
+      <AlurakutProfileSidebarMenuDefault  />
+    
     </Box>
   );
 }
@@ -49,7 +52,7 @@ export default function Home() {
 
   return (
     <>
-      <AlurakutMenu githubUser={undefined} />
+      <AlurakutMenu githubUser={usuarioAleatorio} />
       <MainGrid>
         <div className="profileArea" style={{ gridArea: "profileArea" }}>
           <ProfileSideBar githubUser={usuarioAleatorio} />
@@ -96,11 +99,8 @@ export default function Home() {
         </div>
         <div
           className="profileRelationsArea"
-          style={{ gridArea: "profileRelationsArea" }}
-        >
-          
+          style={{ gridArea: "profileRelationsArea" }}>
           <ProfileRelationsBoxWrapper>
-           
             <h2 className="smallTitle">
               Comunidades ({Object.keys(comunidades).length})
             </h2>
