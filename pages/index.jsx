@@ -4,9 +4,8 @@ import Box from "../src/components/Box";
 import {
   AlurakutMenu,
   AlurakutProfileSidebarMenuDefault,
-  OrkutNostalgicIconSet, 
+  OrkutNostalgicIconSet,
 } from "../src/lib/AlurakutCommons";
-
 
 import { ProfileRelationsBoxWrapper } from "../src/components/ProfileRelations";
 
@@ -24,9 +23,30 @@ function ProfileSideBar(props) {
         </a>
       </p>
       <hr />
-      <AlurakutProfileSidebarMenuDefault  />
-    
+      <AlurakutProfileSidebarMenuDefault />
     </Box>
+  );
+}
+
+function ProfileRelationsBox(propriedades) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {propriedades.title} ({propriedades.items.length})
+      </h2>
+      {/* <ul>
+               {seguidores.map((itemAtual, key) => {
+                return (
+                  <li key={key}>
+                    <a href={`https://github.com/${itemAtual}`}>
+                      <img src={itemAtual} />
+                      <span>{itemAtual}</span>
+                    </a>
+                  </li>
+                );
+              })} 
+            </ul> */}
+    </ProfileRelationsBoxWrapper>
   );
 }
 
@@ -39,8 +59,8 @@ export default function Home() {
     },
   ]);
 
-  
   // const comunidades = [`Alurakut`];
+
   const pessoasFavoritas = [
     "juunegreiros",
     "omariosouto",
@@ -49,6 +69,18 @@ export default function Home() {
     "marcobrunodev",
     "felipefialho",
   ];
+
+  const [seguidores, setSeguidores] = React.useState([]);
+
+  // 0 - Pegar o Array de dados de GitHub
+
+  React.useEffect(() => {
+    fetch("https://api.github.com/users/peas/followers")
+      .then((resposta) => resposta.json())
+      .then((data) => setSeguidores(data));
+  }, []);
+
+  // 01 - criar um box que vai ter um MAP baseado nos itens do array que pegamos do github
 
   return (
     <>
@@ -74,7 +106,6 @@ export default function Home() {
                 };
                 const comunidadesAtualizadas = [...comunidades, comunidade];
                 setComunidades(comunidadesAtualizadas);
-                
               }}
             >
               <div>
@@ -99,7 +130,10 @@ export default function Home() {
         </div>
         <div
           className="profileRelationsArea"
-          style={{ gridArea: "profileRelationsArea" }}>
+          style={{ gridArea: "profileRelationsArea" }}
+        >
+          <ProfileRelationsBox title="Seguidores" items={seguidores} />
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Comunidades ({Object.keys(comunidades).length})
