@@ -52,12 +52,7 @@ function ProfileRelationsBox(propriedades) {
 
 export default function Home() {
   const usuarioAleatorio = "ek1l";
-  const [comunidades, setComunidades] = React.useState([
-    {
-      title: "Eu odeio acordar cedo",
-      image: "https://alurakut.vercel.app/capa-comunidade-01.jpg",
-    },
-  ]);
+  const [comunidades, setComunidades] = React.useState([]);
 
   // const comunidades = [`Alurakut`];
 
@@ -75,9 +70,36 @@ export default function Home() {
   // 0 - Pegar o Array de dados de GitHub
 
   React.useEffect(() => {
+    // GET
     fetch("https://api.github.com/users/peas/followers")
       .then((resposta) => resposta.json())
       .then((data) => setSeguidores(data));
+
+    // API GRAPHQL
+    fetch("https://graphql.datocms.com/", {
+      method: "POST",
+      headers: {
+        Authorization: "d800d3ab179034c069a1d70b9e275a",
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        query: `query{
+        allCommunities {
+          title
+          id
+          imageUrl
+          creatorSlug
+        }
+      }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((respostaCompleta) => {
+        const comunidadesVindasDoDato = respostaCompleta.data.allCommunities;
+        setComunidades(comunidadesVindasDoDato);
+        console.log(comunidadesVindasDoDato);
+      });
   }, []);
 
   // 01 - criar um box que vai ter um MAP baseado nos itens do array que pegamos do github
@@ -139,11 +161,11 @@ export default function Home() {
               Comunidades ({Object.keys(comunidades).length})
             </h2>
             <ul>
-              {comunidades.map((itemAtual, key) => {
+              {comunidades.map((itemAtual) => {
                 return (
-                  <li key={key}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
+                  <li key={itemAtual.id}>
+                    <a href={`/communities/${itemAtual.id}`}>
+                      <img src={itemAtual.imageUrl} />
                       <span>{itemAtual.title}</span>
                     </a>
                   </li>
