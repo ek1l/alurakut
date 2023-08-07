@@ -1,4 +1,6 @@
 import React from "react";
+import nookies from "nookies";
+import jwt from "jsonwebtoken";
 import MainGrid from "../src/components/MainGrid";
 import Box from "../src/components/Box";
 import {
@@ -27,7 +29,6 @@ function ProfileSideBar(props) {
     </Box>
   );
 }
-
 function ProfileRelationsBox(propriedades) {
   return (
     <ProfileRelationsBoxWrapper>
@@ -50,8 +51,8 @@ function ProfileRelationsBox(propriedades) {
   );
 }
 
-export default function Home() {
-  const usuarioAleatorio = "ek1l";
+export default function Home(props) {
+  const usuarioAleatorio = props.githubUser;
   const [comunidades, setComunidades] = React.useState([]);
 
   // const comunidades = [`Alurakut`];
@@ -136,7 +137,7 @@ export default function Home() {
                   body: JSON.stringify(comunidade),
                 }).then(async (response) => {
                   const dados = await response.json();
-                  console.log('DADOSSSS ',dados.registroCriado);
+                  console.log("DADOSSSS ", dados.registroCriado);
                   const comunidade = dados.registroCriado;
                   const comunidadesAtualizadas = [...comunidades, comunidade];
                   setComunidades(comunidadesAtualizadas);
@@ -207,4 +208,15 @@ export default function Home() {
       </MainGrid>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const cookies = nookies.get(context);
+  const token = cookies.USER_TOKEN;
+  const { githubUser } = jwt.decode(token);
+  return {
+    props: {
+      githubUser,
+    },
+  };
 }
